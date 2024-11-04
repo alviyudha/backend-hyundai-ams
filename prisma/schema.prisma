@@ -1,0 +1,121 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model img_slide {
+  id        Int      @id @default(autoincrement())
+  image     String
+  urlImage  String
+  datetime  DateTime @updatedAt
+  createdAt DateTime @default(now())
+}
+
+model dealer {
+  id             Int      @id @default(autoincrement())
+  name           String
+  address        String
+  urlFacebook    String
+  whatsapp       String
+  urlMaps        String
+  urlInstagram   String
+  imgDealer      String
+  urlImageDealer String
+  createdAt      DateTime @default(now())
+}
+
+model color {
+  id              Int      @id @default(autoincrement())
+  backgroundColor String
+  descColor       String
+  colorsImage     String
+  urlcolorsImage  String
+  trimId          Int
+  createdAt       DateTime @default(now())
+  trim            trim     @relation(fields: [trimId], references: [id], map: "Color_trimId_fkey")
+
+  @@index([trimId], map: "Color_trimId_fkey")
+}
+
+model session {
+  id        String   @id
+  sid       String   @unique(map: "Session_sid_key")
+  data      String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+  userCuid  String?
+  user      user?    @relation(fields: [userCuid], references: [cuid], map: "Session_userCuid_fkey")
+
+  @@index([userCuid], map: "Session_userCuid_fkey")
+}
+
+model specification {
+  id         Int      @id @default(autoincrement())
+  headTitle1 String
+  headTitle2 String
+  imgView    String
+  text1      String
+  text2      String
+  text3      String
+  urlImgView String
+  headTitle3 String
+  headTitle4 String?
+  headTitle5 String?
+  text4      String?
+  text5      String?
+  trimId     Int
+  createdAt  DateTime @default(now())
+  trim       trim     @relation(fields: [trimId], references: [id], map: "Specification_trimId_fkey")
+
+  @@index([trimId], map: "Specification_trimId_fkey")
+}
+
+model trim {
+  id               Int             @id @default(autoincrement())
+  trim             String?
+  trimDetail       String?
+  vehicleId        String
+  backgroundImg    String
+  brochure         String
+  otr              String
+  otrPrice         String          @db.VarChar(50)
+  urlBackgroundImg String
+  urlBrochure      String
+  urlWarrantyImg   String
+  warrantyImg      String
+  createdAt        DateTime        @default(now())
+  color            color[]
+  specification    specification[]
+  vehicle          vehicle         @relation(fields: [vehicleId], references: [id], map: "Trim_vehicleId_fkey")
+
+  @@index([vehicleId], map: "Trim_vehicleId_fkey")
+}
+
+model user {
+  id        Int       @id @default(autoincrement())
+  username  String    @unique(map: "User_username_key")
+  password  String
+  role      user_role
+  createdAt DateTime  @default(now())
+  cuid      String    @unique(map: "User_cuid_key")
+  session   session[]
+}
+
+model vehicle {
+  id        String   @id
+  model     String
+  year      Int
+  type      String
+  createdAt DateTime @default(now())
+  trim      trim[]
+}
+
+enum user_role {
+  ADMIN
+  USER
+}

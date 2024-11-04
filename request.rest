@@ -1,0 +1,180 @@
+POST http://localhost:4234/link HTTP/1.1
+Content-Type: application/json
+
+{
+    "link": "https://example.com",
+    "vehicleId": "clxv7cu7t0000z2b0uk12slii"
+}
+
+###
+http://localhost:5579/link/clw03b2ax0000ds52nuywio4g
+###
+GET http://localhost:4234/colormodel
+
+###
+GET http://localhost:5579/specification/1
+###
+DELETE http://localhost:5579/specification/1
+###
+POST http://localhost:5579/specification
+Content-Type: application/json
+
+{
+    "vehicleKey": "transmission",
+    "details": [
+      {
+        "title": "Transmission Type",
+        "text": "10-Speed E-Shifter Automatic"
+      },
+      {
+        "title": "4WD Terrain System",
+        "text": "Standard"
+      },
+      {
+        "title": "Front Suspension",
+        "text": "Ventilated Disc"
+      },
+      {
+        "title": "Rear Suspension",
+        "text": "Coil Spring with Watt’s Link and Anti-Roll Bar"
+      },
+      {
+        "title": "Front Brake",
+        "text": "Ventilated Disc"
+      },
+      {
+        "title": "Rear Brake",
+        "text": "Disc"
+      },
+      {
+        "title": "Differential Type",
+        "text": "Locking rear Differential"
+      },
+      {
+        "title": "Steering System",
+        "text": "Electric Power assisted Steering"
+      },
+      {
+        "title": "Tyres & Wheels",
+        "text": "255/55 R20, Alloy"
+      }
+    ],
+    "vehicleId": "clw03b2ax0000ds52nuywio4g"
+}
+
+###
+PATCH  http://localhost:5579/specification/1
+Content-Type: application/json
+
+{
+    "vehicleKey": "engine",
+    "details": [
+      {
+        "title": "Type",
+        "text": "Diesel (I4) with Bi-Turbo update"
+      },
+      {
+        "title": "Displacement",
+        "text": "1996 cc"
+      },
+      {
+        "title": "Power",
+        "text": "155 kW (210 PS) @3750 rpm"
+      },
+      {
+        "title": "Torque",
+        "text": "500 Nm @ 1750 – 2000 rpm"
+      },
+      {
+        "title": "Fuel System",
+        "text": "80 Liters Diesel"
+      }
+    ],
+    "vehicleId": "clw03b2ax0000ds52nuywio4g"
+}
+
+
+###
+
+PATCH  http://localhost:4234/vehicles/clyntajfq0002i63j0cwdo451
+Content-Type: application/json
+
+{
+    "model": "Stargazer X s",
+    "year" : "2024",
+    "type" : "SUV"
+   
+}
+
+//user
+###
+POST  http://localhost:4234/users
+Content-Type: application/json
+
+{
+  "username": "alfiyudha",
+  "password": "@Alvi234",
+  "confPassword": "@Alvi234",
+  "role": "ADMIN"
+}
+###
+POST  http://localhost:4234/users
+Content-Type: application/json
+
+{
+  "username": "admin-hyundai",
+  "password": "@Dm1n234",
+  "confPassword": "@Dm1n234",
+  "role": "USER"
+}
+###
+GET http://localhost:4234/users
+###
+PATCH   http://localhost:4234/users/clz2di18f00018utoke467yex
+Content-Type: application/json
+
+{
+  "username": "admin-hyundai7",
+  "password": "123456",
+  "confPassword": "123456",
+  "role": "USER"
+}
+###
+DELETE http://localhost:4234/users/clz2iiz4m00006z646t5blifr
+
+###
+POST  https://api2.hyundai-ams.co.id/login
+Content-Type: application/json
+
+{
+  "username": "alfiyudha",
+  "password": "@Alvi234"
+  
+}
+###
+POST  http://localhost:4234/login
+Content-Type: application/json
+
+{
+  "username": "alfiyudha",
+  "password": "@Alvi234"
+  
+}
+###
+GET http://localhost:4234/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjdWlkIjoiY2x6NmZ6NjZpMDAwMGFtdmJvbXp5d3ozdiIsInVzZXJuYW1lIjoiYWxmaXl1ZGhhIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzI3NzQ2ODM5LCJleHAiOjE3Mjc3NTA0Mzl9.tMJfYgjYBgEluNcweS_2HNOYFQZs6ZSGzWl8j4z3-x8
+###
+get   https://api2.hyundai-ams.co.id/me
+###
+delete  https://api2.hyundai-ams.co.id/logout
+
+###
+POST  https://api2.hyundai-ams.co.id/vehicles
+Content-Type: application/json
+
+{
+  "model": "Ioniq 55",
+  "year": "2024",
+  "type": "EV"
+  
+}
