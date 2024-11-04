@@ -38,11 +38,11 @@ const prisma = new PrismaClient();
                     c.trimId,
                     c.id as 'idSpek'
                 FROM 
-                    vehicle a
+                    Vehicle a
                 JOIN 
-                    trim b ON a.id = b.vehicleId
+                    Trim b ON a.id = b.vehicleId
                 JOIN 
-                    specification c ON b.id = c.trimId
+                    Specification c ON b.id = c.trimId
             `);
 
             res.status(200).json(response);
@@ -89,9 +89,9 @@ export const getModelDetailByType = async (req, res) => {
             FROM 
                 vehicle a
             JOIN 
-                trim b ON a.id = b.vehicleId
+                Trim b ON a.id = b.vehicleId
             JOIN 
-                specification c ON b.id = c.trimId
+                Specification c ON b.id = c.trimId
             where a.type = '${typecar}'
         `);
 
@@ -141,11 +141,11 @@ export const getAllModelDataByTrimID = async (req, res) => {
                 d.urlcolorsImage,
                 d.backgroundColor
             FROM 
-                vehicle a
+                Vehicle a
             JOIN 
-                trim b ON a.id = b.vehicleId
+                Trim b ON a.id = b.vehicleId
             JOIN 
-                specification c ON b.id = c.trimId
+                Specification c ON b.id = c.trimId
             JOIN 
                 color d ON b.id = d.trimId
             WHERE 
@@ -213,9 +213,9 @@ export const getModelTrimById = async (req, res) => {
                             b.urlWarrantyImg,
                             b.vehicleId
                         FROM 
-                            vehicle a
+                            Vehicle a
                         JOIN 
-                            trim b ON a.id = b.vehicleId
+                            Trim b ON a.id = b.vehicleId
                         WHERE 
                             a.id = '${uuid}';
 
@@ -247,9 +247,9 @@ export const getModelTrimByIdTrim = async (req, res) => {
                             b.urlWarrantyImg,
                             b.vehicleId
                         FROM 
-                            vehicle a
+                            Vehicle a
                         JOIN 
-                            trim b ON a.id = b.vehicleId
+                            Trim b ON a.id = b.vehicleId
                         WHERE 
                             b.id = '${trimid}';
 

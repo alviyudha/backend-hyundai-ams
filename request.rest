@@ -9,7 +9,7 @@ Content-Type: application/json
 ###
 http://localhost:5579/link/clw03b2ax0000ds52nuywio4g
 ###
-GET http://localhost:4234/colormodel
+GET http://localhost:4234/trims
 
 ###
 GET http://localhost:5579/specification/1

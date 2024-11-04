@@ -53,7 +53,6 @@ const logger = winston.createLogger({
 });
 
 // Middleware CORS
-app.options('*', cors());
 app.use(
   cors({
     origin: ["https://hyundai-ams.co.id", "http://localhost:5173"],

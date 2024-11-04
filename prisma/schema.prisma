@@ -28,7 +28,7 @@ model dealer {
   createdAt      DateTime @default(now())
 }
 
-model color {
+model Color {
   id              Int      @id @default(autoincrement())
   backgroundColor String
   descColor       String
@@ -36,7 +36,7 @@ model color {
   urlcolorsImage  String
   trimId          Int
   createdAt       DateTime @default(now())
-  trim            trim     @relation(fields: [trimId], references: [id], map: "Color_trimId_fkey")
+  trim            Trim     @relation(fields: [trimId], references: [id], map: "Color_trimId_fkey")
 
   @@index([trimId], map: "Color_trimId_fkey")
 }
@@ -49,12 +49,12 @@ model session {
   createdAt DateTime @default(now())
   updatedAt DateTime
   userCuid  String?
-  user      user?    @relation(fields: [userCuid], references: [cuid], map: "Session_userCuid_fkey")
+  user      User?    @relation(fields: [userCuid], references: [cuid], map: "Session_userCuid_fkey")
 
   @@index([userCuid], map: "Session_userCuid_fkey")
 }
 
-model specification {
+model Specification {
   id         Int      @id @default(autoincrement())
   headTitle1 String
   headTitle2 String
@@ -70,12 +70,12 @@ model specification {
   text5      String?
   trimId     Int
   createdAt  DateTime @default(now())
-  trim       trim     @relation(fields: [trimId], references: [id], map: "Specification_trimId_fkey")
+  trim       Trim     @relation(fields: [trimId], references: [id], map: "Specification_trimId_fkey")
 
   @@index([trimId], map: "Specification_trimId_fkey")
 }
 
-model trim {
+model Trim {
   id               Int             @id @default(autoincrement())
   trim             String?
   trimDetail       String?
@@ -83,20 +83,20 @@ model trim {
   backgroundImg    String
   brochure         String
   otr              String
-  otrPrice         String          @db.VarChar(50)
+  otrPrice         Int
   urlBackgroundImg String
   urlBrochure      String
   urlWarrantyImg   String
   warrantyImg      String
   createdAt        DateTime        @default(now())
-  color            color[]
-  specification    specification[]
-  vehicle          vehicle         @relation(fields: [vehicleId], references: [id], map: "Trim_vehicleId_fkey")
+  color            Color[]
+  specification    Specification[]
+  vehicle          Vehicle         @relation(fields: [vehicleId], references: [id], map: "Trim_vehicleId_fkey")
 
   @@index([vehicleId], map: "Trim_vehicleId_fkey")
 }
 
-model user {
+model User {
   id        Int       @id @default(autoincrement())
   username  String    @unique(map: "User_username_key")
   password  String
@@ -106,13 +106,13 @@ model user {
   session   session[]
 }
 
-model vehicle {
+model Vehicle {
   id        String   @id
   model     String
   year      Int
   type      String
   createdAt DateTime @default(now())
-  trim      trim[]
+  trim      Trim[]
 }
 
 enum user_role {
