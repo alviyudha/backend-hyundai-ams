@@ -1,9 +1,5 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient()
-
-
-
-
 export const getVehicles = async (req, res) => {
     try {
         console.log('Received request for /vehicles');

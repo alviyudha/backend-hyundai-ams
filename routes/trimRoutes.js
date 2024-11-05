@@ -2,7 +2,8 @@ import express from 'express'
 import multer from 'multer';
 import path from 'path'; 
 import { createTrims, deletetTrims, getTrims, getTrimsByID, updateTrims } from '../controller/TrimControllers.js';
-import { adminOnly, verifyUser } from '../middleware/AuthUser.js';
+import { verifyUser } from '../middleware/AuthUser.js';
+import { adminOnly } from '../middleware/adminOnly.js';
 
 
 const router = express.Router();
@@ -50,8 +51,8 @@ const upload = multer({
 
 router.get('/trims',getTrims)
 router.get('/trims/:id',getTrimsByID)
-router.post('/trims',verifyUser,adminOnly,upload,createTrims)
-router.delete('/trims/:id',verifyUser,adminOnly,deletetTrims)
-router.patch('/trims/:id',verifyUser,upload,updateTrims)
+router.post('/trims',upload,createTrims)
+router.delete('/trims/:id',deletetTrims)
+router.patch('/trims/:id',upload,updateTrims)
 
 export default router;

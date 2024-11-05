@@ -175,7 +175,7 @@ export const createSpecification = async (req, res) => {
   if (imgSize > 5000000) {
     return res.status(422).json({ msg: "Image must be less than 5 MB." });
   }
-
+ 
   try {
     const newSpecification = await prisma.specification.create({
       data: {
@@ -197,6 +197,7 @@ export const createSpecification = async (req, res) => {
     res.status(200).json({ msg: "Specification created successfully", data: newSpecification });
   } catch (error) {
     console.error(error.message);
+    safeDelete(`./public/image-view/${imgView?.filename}`);
     res.status(500).json({ msg: "Failed to create Specification.", error: error.message });
   }
 };
@@ -267,6 +268,7 @@ export const updateSpecification = async (req, res) => {
         res.status(200).json({ message: "Specification updated successfully", data: updatedSpecification });
     } catch (error) {
         console.error("Error updating specification: ", error);
+        safeDelete(`./public/image-view/${imgView?.filename}`);
         res.status(500).json({ msg: "Failed to update specification", error: error.message });
     }
 };

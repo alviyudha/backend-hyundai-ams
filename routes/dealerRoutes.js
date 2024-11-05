@@ -2,7 +2,8 @@ import express from 'express'
 import multer from 'multer'
 import path from 'path'
 import { createDealer, deleteDealer, getDealer, getDealerByid, updateDealer } from '../controller/dealerControllers.js'
-import { adminOnly, verifyUser } from '../middleware/AuthUser.js'
+import { verifyUser } from '../middleware/AuthUser.js';
+import { adminOnly } from '../middleware/adminOnly.js';
 
 
 const router = express.Router()
@@ -38,8 +39,8 @@ const upload = multer({
 
 router.get('/dealer',getDealer)
 router.get('/dealer/:id',getDealerByid)
-router.post('/dealer',verifyUser,adminOnly,upload,createDealer)
-router.patch('/dealer/:id',verifyUser,upload,updateDealer )
-router.delete('/dealer/:id',verifyUser,adminOnly,deleteDealer)
+router.post('/dealer',upload,createDealer)
+router.patch('/dealer/:id',upload,updateDealer )
+router.delete('/dealer/:id',deleteDealer)
 
 export default router

@@ -1,30 +1,23 @@
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient()
+import jwt from 'jsonwebtoken';
 
-export const verifyUser = async (req,res,next) => {
-    if (!req.session.userCuid){
-        return res.status(401).json({msg: "Please login first"})
+const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret"; 
+
+export const verifyUser = (req, res, next) => {
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+      return res.status(401).json({ status: "error", message: "Authorization header missing" });
     }
-    const users = await prisma.user.findUnique({
-        where :{
-            cuid : req.session.userCuid
-        }
-    })
-    if (!users) 
-        return res.status(401).json({msg: "User not found"})
-    req.userCuid = users.cuid
-    req.role = users.role; 
-    next();
-    
-}
-
-export const adminOnly = async (req,res, next) =>{
-    const users = await prisma.user.findUnique({
-        where :{
-            cuid: req.session.userCuid
-        }
-    })
-    if (!users) return res.status(404).json({msg:"user tidak ditemukan"});
-        if (users.role !== "ADMIN")return res.status(403).json({msg:"akses terlarang"});
-            next();
-}
+  
+    const token = authHeader.split(" ")[1];
+    if (!token) {
+      return res.status(401).json({ status: "error", message: "Token missing" });
+    }
+  
+    jwt.verify(token, JWT_SECRET, (err, decoded) => {
+      if (err) {
+        return res.status(403).json({ status: "error", message: "Token is invalid" });
+      }
+      req.user = decoded;
+      next();
+    });
+  };

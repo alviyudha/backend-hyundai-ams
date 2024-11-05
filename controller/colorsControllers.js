@@ -125,7 +125,7 @@ export const createColor = async (req, res) => {
             data: {
                 backgroundColor,
                 descColor,
-                trimId: parseInt(trimId), // Mengonversi trimId ke integer jika diperlukan
+                trimId: parseInt(trimId), 
                 colorsImage: imgName,
                 urlcolorsImage: imgUrl
             }
@@ -134,7 +134,8 @@ export const createColor = async (req, res) => {
         res.status(201).json({ msg: "Color created successfully", data: newColor });
     } catch (error) {
         console.error(error.message);
-        res.status(500).json({ msg: "Failed to create color." });
+        safeDelete(`./public/cars-color/${colorsImageFile?.filename}`);
+        res.status(500).json({ msg: "Failed to create color."+ error.message });
     }
 };
 
@@ -187,7 +188,8 @@ export const updateColor = async (req, res) => {
         res.status(200).json({ msg: "Color updated successfully", data: updatedColor });
     } catch (error) {
         console.error(error.message);
-        res.status(500).json({ msg: "Failed to update color." });
+        safeDelete(`./public/cars-color/${currentData?.filename}`);
+        res.status(500).json({ msg: "Failed to update color." + error.message});
     }
 };
 

@@ -1,6 +1,7 @@
 import express from 'express'
 import { createUser, deleteUser, getUser, getUserByCUID, updateUser } from '../controller/UserControllers.js';
-import { adminOnly, verifyUser } from '../middleware/AuthUser.js';
+import { verifyUser } from '../middleware/AuthUser.js';
+import { adminOnly } from '../middleware/adminOnly.js';
 
 const router = express.Router();
 

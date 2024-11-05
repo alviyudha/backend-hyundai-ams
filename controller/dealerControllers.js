@@ -81,6 +81,7 @@ export const createDealer = async (req,res) => {
         res.status(200).json({ msg: "Data dealer created successfully", data: newDealer });
     } catch (error) {
         console.error(error.message);
+        safeDelete(`./public/dealer/${imgDealer?.filename}`);
         res.status(500).json({ msg: "Failed to create dealer.", error: error.message });
     }
     }

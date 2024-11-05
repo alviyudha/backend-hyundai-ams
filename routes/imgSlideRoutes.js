@@ -2,7 +2,8 @@ import express from 'express'
 import multer from 'multer'
 import path from 'path'
 import { createImgSlide, deleteImgSlide, getImgSlide, getImgSlideById, updateImgSlide } from '../controller/imgSlideControllers.js'
-import { adminOnly, verifyUser } from '../middleware/AuthUser.js'
+import { verifyUser } from '../middleware/AuthUser.js';
+import { adminOnly } from '../middleware/adminOnly.js';
 
 const router = express.Router()
 
@@ -37,8 +38,8 @@ const upload = multer({
 
 router.get ('/imgslide',getImgSlide)
 router.get ('/imgslide/:id',getImgSlideById)
-router.post ('/imgslide',verifyUser,adminOnly,upload, createImgSlide)
-router.patch ('/imgslide/:id',verifyUser,upload,updateImgSlide)
-router.delete ('/imgslide/:id',verifyUser,adminOnly,deleteImgSlide)
+router.post ('/imgslide',upload, createImgSlide)
+router.patch ('/imgslide/:id',upload,updateImgSlide)
+router.delete ('/imgslide/:id',deleteImgSlide)
 
 export default router

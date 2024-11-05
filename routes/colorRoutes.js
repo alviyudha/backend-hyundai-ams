@@ -2,7 +2,9 @@ import express from 'express'
 import multer from 'multer';
 import path from 'path'
 import { createColor, deleteColor, getColor, getColorbyId, getColorbyModelID, getColorWithModel, getSelectColorsByTrimId, updateColor } from '../controller/colorsControllers.js';
-import { adminOnly, verifyUser } from '../middleware/AuthUser.js';
+import { verifyUser } from '../middleware/AuthUser.js';
+import { adminOnly } from '../middleware/adminOnly.js';
+
 
 
 
@@ -42,8 +44,8 @@ router.get('/colormodel',getColorWithModel)
 router.get('/color/:id',getColorbyId)
 router.get('/color/model/:model',getColorbyModelID)
 router.get('/color/trim/:trimid',getSelectColorsByTrimId)
-router.post('/color/',verifyUser,adminOnly,upload,createColor)
-router.delete('/color/:id',verifyUser,adminOnly,deleteColor)
+router.post('/color/',upload,createColor)
+router.delete('/color/:id',deleteColor)
 router.patch('/color/:id',upload,updateColor)
 
 export default router

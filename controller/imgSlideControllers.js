@@ -22,7 +22,7 @@ const safeDelete = (path) => {
 
 export const getImgSlide = async (req,res) =>{
     try {
-        const response = await prisma.img_slide.findMany()
+        const response = await prisma.imgSlide.findMany()
         res.status(200).json(response)
         
     } catch (error) {
@@ -31,7 +31,7 @@ export const getImgSlide = async (req,res) =>{
 }
 export const getImgSlideById = async (req,res) =>{
     try {
-        const response = await prisma.img_slide.findUnique({
+        const response = await prisma.imgSlide.findUnique({
             where:{
                 id :Number( req.params.id )
             }
@@ -65,7 +65,7 @@ export const createImgSlide = async (req, res) => {
     }
 
     try {
-        const newImgSlide = await prisma.img_slide.create({
+        const newImgSlide = await prisma.imgSlide.create({
             data: {
                 image: imgName,
                 urlImage: imgUrl  
@@ -75,7 +75,8 @@ export const createImgSlide = async (req, res) => {
         res.status(201).json({ msg: "Image Slide created successfully", data: newImgSlide });
     } catch (error) {
         console.error("Error creating image slide: ", error);
-        res.status(500).json({ msg: "Failed to create image slide." });
+        safeDelete(`./public/image-slide/${imgSlide?.filename}`);
+        res.status(500).json({ msg: "Failed to create image slide." + error.message});
     }
 };
 
@@ -84,7 +85,7 @@ export const updateImgSlide = async (req, res) => {
     const newImage = req.file;  
 
     try {
-        const currentData = await prisma.img_slide.findUnique({
+        const currentData = await prisma.imgSlide.findUnique({
             where: { id: parseInt(id) }
         });
 
@@ -111,7 +112,7 @@ export const updateImgSlide = async (req, res) => {
             safeDelete(`./public/image-slide/${currentData.image}`);  // Menghapus gambar lama
         }
 
-        const updateImage = await prisma.img_slide.update({
+        const updateImage = await prisma.imgSlide.update({
             where: { id: parseInt(id) },
             data: updatedData
         });
@@ -126,7 +127,7 @@ export const updateImgSlide = async (req, res) => {
 
 export const deleteImgSlide = async (req,res) =>{
     try {
-        const imageSlide = await prisma.img_slide.findUnique({
+        const imageSlide = await prisma.imgSlide.findUnique({
             where: {
                 id: Number(req.params.id)
             }
@@ -141,7 +142,7 @@ export const deleteImgSlide = async (req,res) =>{
 
         safeDelete(imageSlides);
 
-        await prisma.img_slide.delete({
+        await prisma.imgSlide.delete({
             where: {
                 id: Number(req.params.id)
             }

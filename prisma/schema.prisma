@@ -7,25 +7,49 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model img_slide {
-  id        Int      @id @default(autoincrement())
-  image     String
-  urlImage  String
-  datetime  DateTime @updatedAt
-  createdAt DateTime @default(now())
+model User {
+  cuid      String    @id @default(cuid())
+  username  String    @unique
+  password  String
+  role      user_role @default(USER)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
-model dealer {
-  id             Int      @id @default(autoincrement())
-  name           String
-  address        String
-  urlFacebook    String
-  whatsapp       String
-  urlMaps        String
-  urlInstagram   String
-  imgDealer      String
-  urlImageDealer String
-  createdAt      DateTime @default(now())
+enum user_role {
+  ADMIN
+  USER
+}
+
+model Vehicle {
+  id        String   @id @default(cuid())
+  model     String
+  year      Int
+  type      String
+  createdAt DateTime @default(now())
+  trim      Trim[]
+}
+
+model Trim {
+  id               Int             @id @default(autoincrement())
+  trim             String?
+  trimDetail       String?
+  vehicleId        String
+  backgroundImg    String
+  brochure         String
+  otr              String
+  otrPrice         Int
+  urlBackgroundImg String
+  urlBrochure      String
+  urlWarrantyImg   String
+  warrantyImg      String
+  LinkPage         String
+  createdAt        DateTime        @default(now())
+  color            Color[]
+  specification    Specification[]
+  vehicle          Vehicle         @relation(fields: [vehicleId], references: [id], map: "Trim_vehicleId_fkey")
+
+  @@index([vehicleId], map: "Trim_vehicleId_fkey")
 }
 
 model Color {
@@ -39,19 +63,6 @@ model Color {
   trim            Trim     @relation(fields: [trimId], references: [id], map: "Color_trimId_fkey")
 
   @@index([trimId], map: "Color_trimId_fkey")
-}
-
-model session {
-  id        String   @id
-  sid       String   @unique(map: "Session_sid_key")
-  data      String
-  expiresAt DateTime
-  createdAt DateTime @default(now())
-  updatedAt DateTime
-  userCuid  String?
-  user      User?    @relation(fields: [userCuid], references: [cuid], map: "Session_userCuid_fkey")
-
-  @@index([userCuid], map: "Session_userCuid_fkey")
 }
 
 model Specification {
@@ -75,47 +86,22 @@ model Specification {
   @@index([trimId], map: "Specification_trimId_fkey")
 }
 
-model Trim {
-  id               Int             @id @default(autoincrement())
-  trim             String?
-  trimDetail       String?
-  vehicleId        String
-  backgroundImg    String
-  brochure         String
-  otr              String
-  otrPrice         Int
-  urlBackgroundImg String
-  urlBrochure      String
-  urlWarrantyImg   String
-  warrantyImg      String
-  createdAt        DateTime        @default(now())
-  color            Color[]
-  specification    Specification[]
-  vehicle          Vehicle         @relation(fields: [vehicleId], references: [id], map: "Trim_vehicleId_fkey")
-
-  @@index([vehicleId], map: "Trim_vehicleId_fkey")
-}
-
-model User {
-  id        Int       @id @default(autoincrement())
-  username  String    @unique(map: "User_username_key")
-  password  String
-  role      user_role
-  createdAt DateTime  @default(now())
-  cuid      String    @unique(map: "User_cuid_key")
-  session   session[]
-}
-
-model Vehicle {
-  id        String   @id
-  model     String
-  year      Int
-  type      String
+model ImgSlide {
+  id        Int      @id @default(autoincrement())
+  image     String
+  urlImage  String
   createdAt DateTime @default(now())
-  trim      Trim[]
 }
 
-enum user_role {
-  ADMIN
-  USER
+model Dealer {
+  id             Int      @id @default(autoincrement())
+  name           String
+  address        String
+  urlFacebook    String
+  whatsapp       String
+  urlMaps        String
+  urlInstagram   String
+  imgDealer      String
+  urlImageDealer String
+  createdAt      DateTime @default(now())
 }

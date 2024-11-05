@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import modelsControllers from "./routes/hyundaiRoutes.js";
+import modelsControllers from "./routes/vehicleRoutes.js";
 import colorsControllers from "./routes/colorRoutes.js";
 import specificationControllers from "./routes/specificationRoutes.js";
 import imgSlideControllers from "./routes/imgSlideRoutes.js";
@@ -55,11 +55,11 @@ const logger = winston.createLogger({
 // Middleware CORS
 app.use(
   cors({
-    origin: ["https://hyundai-ams.co.id", "http://localhost:5173"],
+    origin: "http://localhost:5173",
     credentials: true,
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    methods: ["GET", "POST", "PATCH", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
-    optionsSuccessStatus: 200,
+    exposedHeaders: ["Authorization"],
   })
 );
 
