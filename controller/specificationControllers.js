@@ -164,9 +164,7 @@ export const createSpecification = async (req, res) => {
   const imgSize = imgView.size;
   const imgExt = path.extname(imgView.originalname);
   const imgName = imgView.filename;
-  const imgUrl = `${req.protocol}://${req.get(
-        "host"
-      )}/api/image-view/${imgName}`;
+  const imgUrl = `${process.env.APP_HOST}/api/image-view/${imgName}`;
   const allowedImgTypes = ['.png', '.jpg', '.jpeg'];
 
   if (!allowedImgTypes.includes(imgExt.toLowerCase())) {
@@ -225,9 +223,7 @@ export const updateSpecification = async (req, res) => {
             const imgSize = imgView.size;
             const imgExt = path.extname(imgView.originalname);
             const imgName = imgView.filename;
-            const imgUrl = `${req.protocol}://${req.get(
-        "host"
-      )}/api/image-view/${imgName}`;
+            const imgUrl = `${process.env.APP_HOST}/api/image-view/${imgName}`;
             const allowedImgTypes = ['.png', '.jpg', '.jpeg'];
 
             if (!allowedImgTypes.includes(imgExt.toLowerCase())) {

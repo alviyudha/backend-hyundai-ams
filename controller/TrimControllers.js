@@ -132,11 +132,11 @@ export const createTrims = async (req, res) => {
         otrPrice: parseInt(otrPrice, 10),
         LinkPage,
         warrantyImg: warranty.filename,
-        urlWarrantyImg: `${req.protocol}://${req.get("host")}/api/warranty/${warranty.filename}`,
+        urlWarrantyImg: `${process.env.APP_HOST}/api/warranty/${warranty.filename}`,
         backgroundImg: backgroundImg.filename,
-        urlBackgroundImg: `${req.protocol}://${req.get("host")}/api/images/${backgroundImg.filename}`,
+        urlBackgroundImg: `${process.env.APP_HOST}/api/images/${backgroundImg.filename}`,
         brochure: brochure.filename,
-        urlBrochure: `${req.protocol}://${req.get("host")}/api/pdf/${brochure.filename}`,
+        urlBrochure: `${process.env.APP_HOST}/api/pdf/${brochure.filename}`,
         vehicle: { connect: { id: vehicleId } },
       },
     });
@@ -200,7 +200,7 @@ export const updateTrims = async (req, res) => {
         return res.status(422).json({ msg: "Invalid background image type or size exceeds 5 MB." });
       }
       updatedData.backgroundImg = newBackgroundImg.filename;
-      updatedData.urlBackgroundImg = `${req.protocol}://${req.get("host")}/api/images/${newBackgroundImg.filename}`;
+      updatedData.urlBackgroundImg = `${process.env.APP_HOST}/api/images/${newBackgroundImg.filename}`;
     }
 
     if (newBrochure) {
@@ -210,7 +210,7 @@ export const updateTrims = async (req, res) => {
         return res.status(422).json({ msg: "Invalid brochure PDF type or size exceeds 80 MB." });
       }
       updatedData.brochure = newBrochure.filename;
-      updatedData.urlBrochure = `${req.protocol}://${req.get("host")}/api/pdf/${newBrochure.filename}`;
+      updatedData.urlBrochure = `${process.env.APP_HOST}/api/pdf/${newBrochure.filename}`;
     }
 
     if (newWarrantyImg) {
@@ -220,7 +220,7 @@ export const updateTrims = async (req, res) => {
         return res.status(422).json({ msg: "Invalid warranty image type or size exceeds 5 MB." });
       }
       updatedData.warrantyImg = newWarrantyImg.filename;
-      updatedData.urlWarrantyImg = `${req.protocol}://${req.get("host")}/api/warranty/${newWarrantyImg.filename}`;
+      updatedData.urlWarrantyImg = `${process.env.APP_HOST}/api/warranty/${newWarrantyImg.filename}`;
     }
 
     const updatedTrim = await prisma.trim.update({
