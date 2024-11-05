@@ -44,8 +44,8 @@ router.get('/colormodel',getColorWithModel)
 router.get('/color/:id',getColorbyId)
 router.get('/color/model/:model',getColorbyModelID)
 router.get('/color/trim/:trimid',getSelectColorsByTrimId)
-router.post('/color/',upload,createColor)
-router.delete('/color/:id',deleteColor)
-router.patch('/color/:id',upload,updateColor)
+router.post('/color/',verifyUser,adminOnly,upload,createColor)
+router.delete('/color/:id',verifyUser,adminOnly,deleteColor)
+router.patch('/color/:id',verifyUser,upload,updateColor)
 
 export default router

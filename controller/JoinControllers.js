@@ -87,7 +87,7 @@ export const getModelDetailByType = async (req, res) => {
                 c.text5,
                 c.trimId
             FROM 
-                vehicle a
+                Vehicle a
             JOIN 
                 Trim b ON a.id = b.vehicleId
             JOIN 
@@ -147,7 +147,7 @@ export const getAllModelDataByTrimID = async (req, res) => {
             JOIN 
                 Specification c ON b.id = c.trimId
             JOIN 
-                color d ON b.id = d.trimId
+                Color d ON b.id = d.trimId
             WHERE 
                 c.trimID = '${trimid}'
 

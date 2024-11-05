@@ -11,9 +11,9 @@ const router = express.Router();
 router.get('/vehicles',getVehicles)
 router.get('/vehicles/:id',getVehiclesByID)
 router.get('/vehicles/model/:model', getVehiclesByModel);
-router.post('/vehicles',createVehicles)
-router.patch('/vehicles/:id',updateVehicles)
-router.delete('/vehicles/:id',deletetVehicles)
+router.post('/vehicles',verifyUser,adminOnly,createVehicles)
+router.patch('/vehicles/:id',verifyUser,updateVehicles)
+router.delete('/vehicles/:id',verifyUser,adminOnly,deletetVehicles)
 router.get('/test', (req, res) => {
     res.status(200).json({
         message: 'api berhasil',

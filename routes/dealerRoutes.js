@@ -39,8 +39,8 @@ const upload = multer({
 
 router.get('/dealer',getDealer)
 router.get('/dealer/:id',getDealerByid)
-router.post('/dealer',upload,createDealer)
-router.patch('/dealer/:id',upload,updateDealer )
-router.delete('/dealer/:id',deleteDealer)
+router.post('/dealer',verifyUser,adminOnly,upload,createDealer)
+router.patch('/dealer/:id',verifyUser,upload,updateDealer )
+router.delete('/dealer/:id',verifyUser,adminOnly,deleteDealer)
 
 export default router

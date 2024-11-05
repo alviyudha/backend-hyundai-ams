@@ -51,8 +51,8 @@ const upload = multer({
 
 router.get('/trims',getTrims)
 router.get('/trims/:id',getTrimsByID)
-router.post('/trims',upload,createTrims)
-router.delete('/trims/:id',deletetTrims)
-router.patch('/trims/:id',upload,updateTrims)
+router.post('/trims',verifyUser,adminOnly,upload,createTrims)
+router.delete('/trims/:id',verifyUser,adminOnly,deletetTrims)
+router.patch('/trims/:id',verifyUser,upload,updateTrims)
 
 export default router;

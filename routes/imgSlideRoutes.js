@@ -38,8 +38,8 @@ const upload = multer({
 
 router.get ('/imgslide',getImgSlide)
 router.get ('/imgslide/:id',getImgSlideById)
-router.post ('/imgslide',upload, createImgSlide)
-router.patch ('/imgslide/:id',upload,updateImgSlide)
-router.delete ('/imgslide/:id',deleteImgSlide)
+router.post ('/imgslide',verifyUser,adminOnly,upload, createImgSlide)
+router.patch ('/imgslide/:id',verifyUser,upload,updateImgSlide)
+router.delete ('/imgslide/:id',verifyUser,adminOnly,deleteImgSlide)
 
 export default router

@@ -11,7 +11,6 @@ import Trims from "./routes/trimRoutes.js";
 import joinData from "./routes/joinRoutes.js";
 import users from "./routes/userRoutes.js";
 import auth from "./routes/AuthRoutes.js";
-import { PrismaClient } from "@prisma/client";
 import morgan from "morgan";
 import fs from "fs";
 import path from "path";

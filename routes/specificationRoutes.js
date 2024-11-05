@@ -41,8 +41,8 @@ router.get('/specification',getSpecification)
 router.get('/specificationEV',getSpecificationEV)
 router.get('/specificationEV/:id',getSpecificationEVbyid)
 router.get('/specification/:id',getSpecificationByid)
-router.post('/specification',upload,createSpecification)
-router.patch('/specification/:id',upload,updateSpecification )
-router.delete('/specification/:id',deleteSpecification)
+router.post('/specification',verifyUser,adminOnly,upload,createSpecification)
+router.patch('/specification/:id',verifyUser,upload,updateSpecification )
+router.delete('/specification/:id',verifyUser,adminOnly,deleteSpecification)
 
 export default router
