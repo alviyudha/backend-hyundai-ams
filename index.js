@@ -11,6 +11,7 @@ import Trims from "./routes/trimRoutes.js";
 import joinData from "./routes/joinRoutes.js";
 import users from "./routes/userRoutes.js";
 import auth from "./routes/AuthRoutes.js";
+import message from "./routes/messageRoutes.js";
 import morgan from "morgan";
 import fs from "fs";
 import path from "path";
@@ -80,6 +81,7 @@ app.use(imgSlideControllers);
 app.use(link);
 app.use(dealer);
 app.use(Trims);
+app.use(message);
 
 // Middleware untuk menangani 404 (Not Found)
 app.use((req, res, next) => {

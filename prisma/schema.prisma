@@ -105,3 +105,22 @@ model Dealer {
   urlImageDealer String
   createdAt      DateTime @default(now())
 }
+
+model MessageUser {
+  id            Int       @id @default(autoincrement())
+  name          String?
+  email         String?
+  telp          String?
+  nopol         String?
+  carModel      String?
+  dealer        String?
+  dateInput     DateTime?
+  inputMessage  String?
+  catMessage    String?
+  address       String?
+  consentStatus Boolean   
+  consentDate   DateTime? 
+  ipAddress     String?   
+
+  createdAt     DateTime  @default(now())
+}
