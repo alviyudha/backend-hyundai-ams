@@ -95,34 +95,41 @@ export const createTrims = async (req, res) => {
   const imgExt = path.extname(backgroundImg.originalname).toLowerCase();
   const imgSize = backgroundImg.size;
   if (!allowedImgTypes.includes(imgExt) || imgSize > 5000000) {
-    return res.status(422).json({ msg: "Invalid image type or image size exceeds 5 MB." });
+    return res
+      .status(422)
+      .json({ msg: "Invalid image type or image size exceeds 5 MB." });
   }
 
   const pdfExt = path.extname(brochure.originalname).toLowerCase();
   const pdfSize = brochure.size;
   if (!allowedPdfTypes.includes(pdfExt) || pdfSize > 80000000) {
-    return res.status(422).json({ msg: "Invalid PDF type or PDF size exceeds 80 MB." });
+    return res
+      .status(422)
+      .json({ msg: "Invalid PDF type or PDF size exceeds 80 MB." });
   }
 
   const warrantyExt = path.extname(warranty.originalname).toLowerCase();
   const warrantySize = warranty.size;
   if (!allowedImgTypes.includes(warrantyExt) || warrantySize > 5000000) {
-    return res.status(422).json({ msg: "Invalid warranty image type or image size exceeds 5 MB." });
+    return res
+      .status(422)
+      .json({ msg: "Invalid warranty image type or image size exceeds 5 MB." });
   }
 
   try {
-    // Ambil model dari Vehicle terkait
     const vehicle = await prisma.vehicle.findUnique({
       where: { id: vehicleId },
-      select: { model: true }
+      select: { model: true },
     });
 
     if (!vehicle) {
       return res.status(404).json({ msg: "Vehicle not found" });
     }
 
-    // Gabungkan model dengan trim untuk membentuk LinkPage
-    const LinkPage = `${vehicle.model.replace(/\s+/g, '')}-${trim.replace(/\s+/g, '')}`;
+    const LinkPage = `${vehicle.model.replace(/\s+/g, "")}-${trim.replace(
+      /\s+/g,
+      ""
+    )}`;
 
     const newTrim = await prisma.trim.create({
       data: {
@@ -149,10 +156,11 @@ export const createTrims = async (req, res) => {
     safeDelete(`./public/pdf/${brochure?.filename}`);
     safeDelete(`./public/warranty/${warranty?.filename}`);
 
-    res.status(500).json({ msg: "Failed to create Trim data. Error: " + error.message });
+    res
+      .status(500)
+      .json({ msg: "Failed to create Trim data. Error: " + error.message });
   }
 };
-
 
 export const updateTrims = async (req, res) => {
   const { trim, trimDetail, otr, otrPrice, vehicleId } = req.body;
@@ -170,14 +178,13 @@ export const updateTrims = async (req, res) => {
   try {
     const currentData = await prisma.trim.findUnique({
       where: { id: Number(req.params.id) },
-      include: { vehicle: true }
+      include: { vehicle: true },
     });
 
     if (!currentData) {
       return res.status(404).json({ msg: "Trim not found" });
     }
 
-    // Jika vehicleId atau trim diubah, buat LinkPage baru
     if (vehicleId || trim) {
       const vehicle = vehicleId
         ? await prisma.vehicle.findUnique({ where: { id: vehicleId } })
@@ -187,7 +194,9 @@ export const updateTrims = async (req, res) => {
         return res.status(404).json({ msg: "Vehicle not found" });
       }
 
-      updatedData.LinkPage = `${vehicle.model.replace(/\s+/g, '')}-${trim ? trim.replace(/\s+/g, '') : currentData.trim.replace(/\s+/g, '')}`;
+      updatedData.LinkPage = `${vehicle.model.replace(/\s+/g, "")}-${
+        trim ? trim.replace(/\s+/g, "") : currentData.trim.replace(/\s+/g, "")
+      }`;
     }
 
     const allowedImgTypes = [".png", ".jpg", ".jpeg"];
@@ -197,7 +206,9 @@ export const updateTrims = async (req, res) => {
       const imgExt = path.extname(newBackgroundImg.originalname).toLowerCase();
       const imgSize = newBackgroundImg.size;
       if (!allowedImgTypes.includes(imgExt) || imgSize > 5000000) {
-        return res.status(422).json({ msg: "Invalid background image type or size exceeds 5 MB." });
+        return res
+          .status(422)
+          .json({ msg: "Invalid background image type or size exceeds 5 MB." });
       }
       updatedData.backgroundImg = newBackgroundImg.filename;
       updatedData.urlBackgroundImg = `${process.env.APP_HOST}images/${newBackgroundImg.filename}`;
@@ -207,17 +218,23 @@ export const updateTrims = async (req, res) => {
       const pdfExt = path.extname(newBrochure.originalname).toLowerCase();
       const pdfSize = newBrochure.size;
       if (!allowedPdfTypes.includes(pdfExt) || pdfSize > 80000000) {
-        return res.status(422).json({ msg: "Invalid brochure PDF type or size exceeds 80 MB." });
+        return res
+          .status(422)
+          .json({ msg: "Invalid brochure PDF type or size exceeds 80 MB." });
       }
       updatedData.brochure = newBrochure.filename;
       updatedData.urlBrochure = `${process.env.APP_HOST}pdf/${newBrochure.filename}`;
     }
 
     if (newWarrantyImg) {
-      const warrantyExt = path.extname(newWarrantyImg.originalname).toLowerCase();
+      const warrantyExt = path
+        .extname(newWarrantyImg.originalname)
+        .toLowerCase();
       const warrantySize = newWarrantyImg.size;
       if (!allowedImgTypes.includes(warrantyExt) || warrantySize > 5000000) {
-        return res.status(422).json({ msg: "Invalid warranty image type or size exceeds 5 MB." });
+        return res
+          .status(422)
+          .json({ msg: "Invalid warranty image type or size exceeds 5 MB." });
       }
       updatedData.warrantyImg = newWarrantyImg.filename;
       updatedData.urlWarrantyImg = `${process.env.APP_HOST}warranty/${newWarrantyImg.filename}`;
@@ -228,14 +245,20 @@ export const updateTrims = async (req, res) => {
       data: updatedData,
     });
 
-    if (newBackgroundImg) safeDelete(`./public/images/${currentData.backgroundImg}`);
+    if (newBackgroundImg)
+      safeDelete(`./public/images/${currentData.backgroundImg}`);
     if (newBrochure) safeDelete(`./public/pdf/${currentData.brochure}`);
-    if (newWarrantyImg) safeDelete(`./public/warranty/${currentData.warrantyImg}`);
+    if (newWarrantyImg)
+      safeDelete(`./public/warranty/${currentData.warrantyImg}`);
 
-    res.status(200).json({ msg: "Trim updated successfully", data: updatedTrim });
+    res
+      .status(200)
+      .json({ msg: "Trim updated successfully", data: updatedTrim });
   } catch (error) {
     console.error(error.message);
     safeDelete(`./public/images/${newBackgroundImg?.filename}`);
-    res.status(500).json({ msg: "Failed to update trim. Error: " + error.message });
+    res
+      .status(500)
+      .json({ msg: "Failed to update trim. Error: " + error.message });
   }
 };

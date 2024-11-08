@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import path from 'path'
 import fs from 'fs'
+import sharp from 'sharp';
 const prisma = new PrismaClient();
 
 
@@ -118,27 +119,36 @@ export const createColor = async (req, res) => {
         return res.status(422).json({ msg: "Image must be less than 5 MB." });
     }
 
+    const imgPath = path.join(__dirname, 'public', 'cars-color', imgName);
+    const compressedImgPath = path.join(__dirname, 'public', 'cars-color', `compressed-${imgName}`);
+
     try {
+        await sharp(imgPath)
+            .resize(800)  
+            .toFormat('webp', { quality: 80 }) 
+            .toFile(compressedImgPath);
+
+        fs.unlinkSync(imgPath);
+
         const newColor = await prisma.color.create({
             data: {
                 backgroundColor,
                 descColor,
                 trimId: parseInt(trimId), 
-                colorsImage: imgName,
-                urlcolorsImage: imgUrl
+                colorsImage: `compressed-${imgName}`,
+                urlcolorsImage: `${process.env.APP_HOST}cars-color/compressed-${imgName}`
             }
         });
 
         res.status(201).json({ msg: "Color created successfully", data: newColor });
     } catch (error) {
         console.error(error.message);
-        safeDelete(`./public/cars-color/${colorsImageFile?.filename}`);
-        res.status(500).json({ msg: "Failed to create color."+ error.message });
+        fs.unlinkSync(compressedImgPath);
+        res.status(500).json({ msg: "Failed to create color." + error.message });
     }
 };
 
 export const updateColor = async (req, res) => {
-    // Convert id from string to integer
     const id = parseInt(req.params.id, 10);
     if (isNaN(id)) {
         return res.status(400).json({ msg: "Invalid ID format" });
@@ -151,7 +161,7 @@ export const updateColor = async (req, res) => {
         vehicleId,
     };
 
-    const newColorsImage = req.file; // Assuming Multer is set to handle single file upload as 'colorsImage'
+    const newColorsImage = req.file; 
 
     try {
         const currentData = await prisma.color.findUnique({
@@ -171,8 +181,19 @@ export const updateColor = async (req, res) => {
                 return res.status(422).json({ msg: "Invalid image type or size. Image must be less than 5 MB and of type PNG, JPG, or JPEG." });
             }
 
-            updatedData.colorsImage = newColorsImage.filename;
-            updatedData.urlcolorsImage = `${process.env.APP_HOST}cars-color/${newColorsImage.filename}`;
+            const newImgPath = path.join(__dirname, 'public', 'cars-color', newColorsImage.filename);
+            const compressedNewImgPath = path.join(__dirname, 'public', 'cars-color', `compressed-${newColorsImage.filename}`);
+
+            await sharp(newImgPath)
+                .resize(800)  
+                .toFormat('webp', { quality: 80 })
+                .toFile(compressedNewImgPath);
+
+            fs.unlinkSync(newImgPath);
+
+            updatedData.colorsImage = `compressed-${newColorsImage.filename}`;
+            updatedData.urlcolorsImage = `${process.env.APP_HOST}cars-color/compressed-${newColorsImage.filename}`;
+
             safeDelete(`./public/cars-color/${currentData.colorsImage}`);
         }
 
@@ -184,8 +205,8 @@ export const updateColor = async (req, res) => {
         res.status(200).json({ msg: "Color updated successfully", data: updatedColor });
     } catch (error) {
         console.error(error.message);
-        safeDelete(`./public/cars-color/${currentData?.filename}`);
-        res.status(500).json({ msg: "Failed to update color." + error.message});
+        fs.unlinkSync(compressedNewImgPath);
+        res.status(500).json({ msg: "Failed to update color." + error.message });
     }
 };
 
@@ -202,7 +223,6 @@ export const deleteColor  = async (req,res) =>{
             return res.status(404).json({ msg: "Data not found" });
         }
 
-        // console.log(`Working Directory: ${process.cwd()}`); 
         const colorsImage = `./public/cars-color/${color.colorsImage}`;
 
         safeDelete(colorsImage);
