@@ -242,7 +242,6 @@ export const updateSpecification = async (req, res) => {
             }
         }
 
-        // Update the specification record
         const updatedSpecification = await prisma.specification.update({
             where: { id: specId },
             data: {
